@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
     [Header("Defense")]
     public int maxHealth = 100;
     public int healthRegenerationValue = 1;
+    public int maxHealthRegenerationValue = 2;
     public float currentHealth = 0;
 
 
@@ -39,10 +40,9 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-
         currentHealth = maxHealth;
 
-        healthRegenerationValue = playerData.SetHpRegenSpeed();
+        healthRegenerationValue = playerData.SetHpRegen();
         Name = playerData.SetPlayerName();
         currentHealth = playerData.SetHealth();
         MovementSpeed = playerData.SetMovementSpeed();
@@ -54,13 +54,57 @@ public class Player : MonoBehaviour
     {
         HandleInput(); 
         InitCloth();
+        HandleStates();
         Die();
     }
 
 
-    
+    private void HandleStates()
+    {
+        HandleHealthRegenStates();
+        HandleActionPoints(); 
+        HandleOffenseStats();
+    }
+
+    private int HandleHealthRegenStates()
+    {
+        if (currentState == "Idle")
+        {
+            healthRegenerationValue = maxHealthRegenerationValue;
+        }
+        else if (currentState != "Idle")
+        {
+            healthRegenerationValue = 1;
+        }
+        return healthRegenerationValue;
+    }
+
+    private void HandleActionPoints()
+    {
+        if (Input.GetKeyDown(KeyCode.E) && actionPoints > 0)
+        {         
+            strength += 1;
+            actionPoints -= 1;
+            damageValue += 3;
+            attackSpeed += 0.1f;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q) && actionPoints > 0)
+        {
+            defense += 1;
+            actionPoints -= 1;
+            maxHealth += 10;
+        }
+    }
+
+    private void HandleOffenseStats()
+    {
+        
+    }
 
 
+
+  
     void Die()
     {
         if (currentHealth <= 0)
@@ -73,6 +117,7 @@ public class Player : MonoBehaviour
 
     void HandleInput()
     {
+       
         if (Input.GetMouseButtonUp(0) && !inBattle)
         {
             currentState = "Walk";
@@ -90,6 +135,5 @@ public class Player : MonoBehaviour
         headGear.sprite = playerData.playerHead;
         bodyGear.sprite = playerData.playerBody;
         bottomGear.sprite = playerData.playerBottom;
-    }
-   
+    } 
 }

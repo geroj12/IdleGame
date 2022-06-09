@@ -10,7 +10,7 @@ namespace Aleksey
         public string pName = "";
         public int health = 0;
         public float moveSpeedValue = 0;
-        public int hpRegenSpeedValue = 0;
+        public int hpRegenValue = 0;
 
         [Header("Init")]
         public float startPosX = 0f;
@@ -21,9 +21,9 @@ namespace Aleksey
         public Sprite playerBody;
         public Sprite playerBottom;
 
-        public int SetHpRegenSpeed()
+        public int SetHpRegen()
         {
-            return hpRegenSpeedValue;
+            return hpRegenValue;
         }
 
         public float SetMovementSpeed()

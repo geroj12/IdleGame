@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
 
     [Header("Attributes")]
     public int actionPoints = 0;
+    public int maxActionPoints = 5;
     public int strength = 0;
     public int defense = 0;
 
@@ -40,6 +41,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        maxActionPoints = 5;
         currentHealth = maxHealth;
 
         healthRegenerationValue = playerData.SetHpRegen();
@@ -63,7 +65,6 @@ public class Player : MonoBehaviour
     {
         HandleHealthRegenStates();
         HandleActionPoints(); 
-        HandleOffenseStats();
     }
 
     private int HandleHealthRegenStates()
@@ -81,7 +82,7 @@ public class Player : MonoBehaviour
 
     private void HandleActionPoints()
     {
-        if (Input.GetKeyDown(KeyCode.E) && actionPoints > 0)
+        if (Input.GetKeyDown(KeyCode.E) && actionPoints > 0 && strength <5)
         {         
             strength += 1;
             actionPoints -= 1;
@@ -89,7 +90,7 @@ public class Player : MonoBehaviour
             attackSpeed += 0.1f;
         }
 
-        if (Input.GetKeyDown(KeyCode.Q) && actionPoints > 0)
+        if (Input.GetKeyDown(KeyCode.Q) && actionPoints > 0 && defense <5)
         {
             defense += 1;
             actionPoints -= 1;
@@ -97,14 +98,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void HandleOffenseStats()
-    {
-        
-    }
 
-
-
-  
     void Die()
     {
         if (currentHealth <= 0)

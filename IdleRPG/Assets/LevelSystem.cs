@@ -21,7 +21,15 @@ public class LevelSystem : MonoBehaviour
     {
         player.currentExp = 0;
         player.currentLevel += 1;
-        player.actionPoints += 1;
         player.maxExp += 10;
+        MaxActionPointsReached();
+    }
+
+    protected void MaxActionPointsReached()
+    {
+        if (player.actionPoints < player.maxActionPoints)
+        {
+            player.actionPoints += 1;
+        }
     }
 }

@@ -6,7 +6,7 @@ public class HurtboxEnemy : MonoBehaviour
 {
     [SerializeField] private Enemy enemy;
 
-    public void EnemyTakeDamage(int dmg)
+    public void TakeDamage(int dmg)
     {
         enemy.currentHealth -= dmg;
     

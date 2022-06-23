@@ -11,9 +11,7 @@ public class PlayerHitbox : MonoBehaviour
         if (collision.CompareTag("Enemy"))
         {
             Debug.Log("DoDmgToEnemy");
-            collision.gameObject.GetComponent<HurtboxEnemy>().EnemyTakeDamage(player.damageValue);
-        }
-
-       
+            collision.gameObject.GetComponent<HurtboxEnemy>().TakeDamage(player.damageValue);
+        }     
     }
 }

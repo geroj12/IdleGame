@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyHitbox : MonoBehaviour
@@ -11,7 +9,7 @@ public class EnemyHitbox : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             Debug.Log("DoDmgToPlayer");
-            collision.gameObject.GetComponent<HurtboxPlayer>().PlayerTakeDamage(enemy.damageValue);
+            collision.gameObject.GetComponent<HurtboxPlayer>().TakeDamage(enemy.damageValue);
         }
     }
 }

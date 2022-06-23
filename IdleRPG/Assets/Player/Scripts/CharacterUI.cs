@@ -4,6 +4,7 @@ using UnityEngine;
 public class CharacterUI : MonoBehaviour
 {
     [SerializeField] private Player player;
+    public static CharacterUI instance;
     public TextMeshProUGUI playerNameUI;   
     public TextMeshProUGUI playerHealthUI;
     public TextMeshProUGUI playerHealthRegenUI;
@@ -23,6 +24,19 @@ public class CharacterUI : MonoBehaviour
     public TextMeshProUGUI playerAttackSpeedUI;
 
     public GameObject afterBattleUI;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != null)
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
 
     private void Update()
     {

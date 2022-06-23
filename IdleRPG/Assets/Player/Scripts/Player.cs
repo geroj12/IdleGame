@@ -1,11 +1,11 @@
 using UnityEngine;
 using Aleksey;
-using System.Collections;
 using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
     public PlayerData playerData;
+    public static Player instance;
     public bool inBattle = false;
 
     [Header("Info")]
@@ -39,17 +39,14 @@ public class Player : MonoBehaviour
     [SerializeField] private SpriteRenderer bodyGear;
     [SerializeField] private SpriteRenderer bottomGear;
 
+    private void Awake()
+    {
+        InitPlayer();
+    }
+
     private void Start()
     {
-        maxActionPoints = 5;
-        currentHealth = maxHealth;
-
-        healthRegenerationValue = playerData.SetHpRegen();
-        Name = playerData.SetPlayerName();
-        currentHealth = playerData.SetHealth();
-        MovementSpeed = playerData.SetMovementSpeed();
-        this.transform.localPosition = playerData.SetSpawnPosition(new Vector2(playerData.startPosX, playerData.startPosY));
-    
+        TransferPlayerData();
     }
     
     void Update()
@@ -57,14 +54,39 @@ public class Player : MonoBehaviour
         HandleInput(); 
         InitCloth();
         HandleStates();
-        Die();
+        Die();    
     }
 
+    private void TransferPlayerData()
+    {
+        healthRegenerationValue = playerData.SetHpRegen();
+        Name = playerData.SetPlayerName();
+        currentHealth = playerData.SetHealth();
+        MovementSpeed = playerData.SetMovementSpeed();
+        this.transform.localPosition = playerData.SetSpawnPosition(new Vector2(playerData.startPosX, playerData.startPosY));
+    }
+
+    private void InitPlayer()
+    {
+        maxActionPoints = 5;
+        currentHealth = maxHealth;
+
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != null)
+        {
+            Destroy(gameObject);
+        }
+
+        DontDestroyOnLoad(gameObject);
+    }
 
     private void HandleStates()
     {
         HandleHealthRegenStates();
-        HandleActionPoints(); 
+        HandleActionPointsInputCondition(); 
     }
 
     private int HandleHealthRegenStates()
@@ -80,31 +102,39 @@ public class Player : MonoBehaviour
         return healthRegenerationValue;
     }
 
-    private void HandleActionPoints()
+    private void HandleActionPointsInputCondition()
     {
         if (Input.GetKeyDown(KeyCode.E) && actionPoints > 0 && strength <5)
-        {         
-            strength += 1;
-            actionPoints -= 1;
-            damageValue += 3;
-            attackSpeed += 0.1f;
+        {
+            IncreaseStrength();
         }
 
         if (Input.GetKeyDown(KeyCode.Q) && actionPoints > 0 && defense <5)
         {
-            defense += 1;
-            actionPoints -= 1;
-            maxHealth += 10;
+            IncreaseDefense();
         }
     }
 
+    private void IncreaseStrength()
+    {
+        strength += 1;
+        actionPoints -= 1;
+        damageValue += 3;
+        attackSpeed += 0.1f;
+    }
+
+    private void IncreaseDefense()
+    {
+        defense += 1;
+        actionPoints -= 1;
+        maxHealth += 10;
+    }
 
     void Die()
     {
         if (currentHealth <= 0)
         {
-            SceneManager.LoadScene("SampleScene");
-            
+            SceneManager.LoadScene("SampleScene");           
         }
     }
 
